@@ -985,6 +985,7 @@
         , actualHeight
         , placement
         , tp
+        , d
 
       if (this.hasContent() && this.enabled) {
         $tip = this.tip()
@@ -1024,6 +1025,12 @@
             tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width}
             break
         }
+
+        // fix position if won't fit the screen
+        if ((d = tp.top - 40) < 0) tp.top -= d;
+        else if((d = window.innerHeight - (tp.top + actualHeight)) < 0) tp.top += d;
+        if ((d = tp.left - 40) < 0) tp.left -= d;
+        else if((d = window.innerWidth - (tp.left + actualWidth)) < 0) tp.left += d;
 
         $tip
           .css(tp)
@@ -1083,9 +1090,10 @@
     }
 
   , getPosition: function (inside) {
-      return $.extend({}, (inside ? {top: 0, left: 0} : this.$element.offset()), {
-        width: this.$element[0].offsetWidth
-      , height: this.$element[0].offsetHeight
+      var $el = (this.options.relativeTo || this.$element);
+      return $.extend({}, (inside ? {top: 0, left: 0} : $el.offset()), {
+        width: $el[0].offsetWidth
+      , height: $el[0].offsetHeight
       })
     }
 
@@ -1156,7 +1164,8 @@
   , delay: 0
   }
 
-}(window.jQuery);/* ===========================================================
+}(window.jQuery);
+/* ===========================================================
  * bootstrap-popover.js v2.0.3
  * http://twitter.github.com/bootstrap/javascript.html#popovers
  * ===========================================================
