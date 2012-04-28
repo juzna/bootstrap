@@ -51,6 +51,9 @@
         this.$element.on(eventOut, this.options.selector, $.proxy(this.leave, this))
       }
 
+
+		  
+
       this.options.selector ?
         (this._options = $.extend({}, this.options, { trigger: 'manual', selector: '' })) :
         this.fixTitle()
